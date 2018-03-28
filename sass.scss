@@ -1,0 +1,199 @@
+// sassing it up :D
+// save things into variables, eg. colours, font stacks
+// need to change the primary color? no problemo;
+$primary: #25c39d;
+$secondary: #e9304c;
+$yellow: #e3b849;
+$body-copy: #111;
+$tahoma: "Tahoma", sans-serif;
+$rockwell-font-stack: Rockwell, "Courier Bold", Courier, Georgia, "Times New Roman", serif;
+
+// variables in use
+p {
+  color: $primary;
+  font-family: $tahoma;
+}
+
+// sass functions
+// inbuilt functions like:
+p {
+  color: darken($primary, 10%);
+  color: lighten($primary, 25%);
+  background-color: grayscale($secondary);
+}
+
+// mathing. If you know you have a parent container with a width of 960px, you can get sass to convert this to percentage
+.main-content {
+  width: 600px / 960px * 100%;
+}
+
+.sidebar {
+  width: 300px / 960px * 100%;
+}
+
+// compiles to :
+.main-content {
+  width: 62.5%;
+}
+
+.sidebar {
+  width: 31.25%;
+}
+
+// nesting - instead of seperate rules...
+.parent-container {
+  background-color: $primary;
+}
+
+.parent-container .child-element {
+  font-family: $tahoma;
+}
+
+.parent-container .child-element p {
+  color: $body-copy;
+}
+
+// ... we can nest. The output CSS will be the same as above ^
+.parent-container {
+  background-color: $primary;
+
+  .child-element {
+    font-family: $tahoma;
+
+    p {
+      color: $body-copy;
+    }
+  }
+}
+
+// we can even nest media queries! instead of:
+@media (min-width: 992px) {
+  p {
+    font-size: 20px;
+  }
+}
+
+// we can nest media queries associated with an element, rather than having all media queries at the end
+p {
+  font-size: 13px;
+
+  @media (min-width: 992px) {
+    font-size: 14px;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 15px;
+  }
+}
+
+// CSS will compile to:
+p {
+  font-size: 13px;
+}
+
+@media (min-width: 992px) {
+  p {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1200px) {
+  p {
+    font-size: 15px;
+  }
+}
+
+// turning our media queries into variables
+$tablet-width: 768px;
+$laptop-width: 992px;
+$desktop-width: 1200px;
+
+// using mixins (functions)
+// 'content' directive allows us to pass content block into a mixin
+// #{} is interpolation that can be used to place any value into a string
+@mixin tablet {
+  @media (min-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (min-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
+// to use this mixin, we call @include then the mixin name
+p {
+  font-size: 13px;
+
+  @include tablet {
+    font-size: 14px;
+  }
+
+
+  @include laptop {
+    font-size: 15px;
+  }
+
+
+  @include desktop {
+    font-size: 16px;
+  }
+}
+
+// bootstrap 4 uses mixins to write their media queries
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {}
+
+@include media-breakpoint-up(sm) {}
+
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {}
+
+@include media-breakpoint-up(md) {}
+
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {}
+
+@include media-breakpoint-up(lg) {}
+
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {}
+
+@include media-breakpoint-up(xl) {}
+
+
+// extend/inheritance
+// can use a placeholder selector, and let other selectors inherit their styles from it
+
+%btn {
+  display: inline-block;
+  border-radius: 2px;
+  padding: 1.5rem 2rem;
+}
+
+.pink-btn {
+  @extend %btn;
+
+  color: pink;
+  background-color: peachpuff;
+}
+
+.warning-btn {
+  @extend %btn;
+
+  color: red;
+  padding: 3rem 4rem;
+  text-transform: uppercase;
+}
